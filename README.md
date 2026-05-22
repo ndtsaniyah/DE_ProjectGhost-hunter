@@ -1,1 +1,1 @@
-# FYEP-CapstoneProject-Team8
+# Detection Engineer for Project Ghost-Hunter
