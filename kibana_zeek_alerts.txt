@@ -1,0 +1,25 @@
+=============================================================================
+ KIBANA QUERY LANGUAGE (KQL) BLUEPRINT - PROJECT GHOST-HUNTER
+ Fokus: Deteksi DNS Tunneling (dnscat2) via Sensor Jaringan Zeek
+=============================================================================
+
+1. Kueri Dasar: Memantau Semua Trafik DNS ke Domain Target Simulasi
+ Gunakan kueri ini di kolom pencarian Kibana untuk melihat semua aktivitas terkait domain lab kalian.
+data.zeek.dns.query: "globaltech-auth.com"
+
+
+2. Kueri Spesifik: Deteksi Tipe Query TXT (Ciri Khas dnscat2)
+ dnscat2 menggunakan record TXT karena kapasitas payload-nya lebih besar untuk exfiltration data.
+data.zeek.dns.query: "globaltech-auth.com" AND data.zeek.dns.qtype_name: "TXT"
+
+
+3. Kueri Deteksi Anomali: Eksklusi Query DNS Normal (Tuning False Positive)
+ Kueri ini digunakan untuk menyisihkan domain-domain besar yang sering melakukan query TXT massal (seperti Microsoft/Google) agar pemburuan fokus pada target.
+data.zeek.dns.qtype_name: "TXT" AND NOT (data.zeek.dns.query: "microsoft.com" OR data.zeek.dns.query: "google.com")
+
+
+4. Logika Alerting Threshold (Untuk Tiket [D-3] & [D-4] di Kibana Alert)
+ Saat dikonfigurasi di Kibana Alerts, gunakan aturan ambang batas (Threshold Rule):
+ - Kondisi: data.zeek.dns.qtype_name == "TXT"
+ - Group by: data.zeek.dns.query
+ - Threshold: Jalankan alarm jika jumlah kueri (Doc Count) > 50 dalam durasi 1 menit ke subdomain yang sama.
