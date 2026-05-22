@@ -40,25 +40,6 @@ Saya menerapkan standardisasi ID aturan kustom pada rentang **100001 - 100010** 
 
 ---
 
-## 📆 Rencana Pelaksanaan & To-Do List (Spesifik Peran)
-
-### 🔹 Minggu 1: Analisis Telemetri & Perancangan Draf Aturan
-* [x] Mempelajari dan memetakan struktur bidang data mentah (*raw log fields*) hasil pengetatan GPO, Sysmon (ID 1 & 4104), dan Zeek dns.log pada Kibana.
-* [x] Menyiapkan lingkungan kerja lokal di **VS Code** dengan ekstensi XML/YAML untuk standardisasi penulisan aturan pertahanan.
-* [x] Merancang draf awal logika deteksi (*rule blueprint*) berbasis ekspresi reguler (Regex) untuk menangkap parameter mencurigakan.
-
-### 🔹 Minggu 2: Implemetasi Kode Deteksi Kustom & Otomatisasi
-* [ ] Mengamati karakteristik log anomali yang berhasil diisolasi di ELK/Kibana pasca eksekusi simulasi serangan oleh tim.
-* [ ] Menulis kode **Custom Detection Rules** (`.xml` & `.yml`) di VS Code menggunakan variabel field asli sesuai taksonomi ID kelompok.
-* [ ] Mengembangkan draf awal skrip otomatisasi analisis insiden berbasis AI menggunakan **Python** untuk memproses alert kustom secara otomatis.
-
-### 🔹 Minggu 3: Finalisasi, Pengujian, & Penyusunan Dokumen Mitigasi
-* [ ] Mengunggah (*upload*) dan menguji (*testing*) *Custom Detection Rules* ke dalam server Wazuh Manager untuk memastikan bebas dari *syntax error*.
-* [ ] Mengintegrasikan dan mendemonstrasikan skrip **AI-Powered Incident Analyst (Python)** untuk melakukan pengayaan analisis otomatis (*automated triage*) saat alert terpicu di SIEM.
-* [ ] Menyusun dokumen rekomendasi mitigasi konkret untuk pengerasan sistem (*system hardening*), seperti pembatasan hak akses `schtasks.exe` dan pemblokiran kueri DNS TXT yang tidak sah.
-
----
-
 ## 📁 Struktur Repositori (Detection Engineer Workspace)
 
 ```text
