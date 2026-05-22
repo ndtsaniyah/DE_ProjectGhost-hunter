@@ -1,12 +1,6 @@
 # Detection Engineer for Project Ghost-Hunter
 
 # 🛡️ Ghost-Hunter: Detection Engineering & Defense Automation Lab
-
-[![Role](https://img.shields.io/badge/Role-Detection%20Engineer-maroon?style=for-the-badge)](https://github.com/ndtsaniyah)
-[![Framework](https://img.shields.io/badge/Framework-MITRE%20ATT%28%26%29CK-red?style=flat-square)](https://attack.mitre.org/)
-[![SIEM](https://img.shields.io/badge/SIEM-Wazuh%20%7C%20ELK%20Stack-blue?style=flat-square)](https://wazuh.com/)
-[![Automation](https://img.shields.io/badge/Automation-Python%20AI-green?style=flat-square)](https://www.python.org/)
-
 Repositori ini mendokumentasikan seluruh artefak teknis, logika deteksi, dan skrip otomatisasi mitigasi yang saya kembangkan sebagai **Detection Engineer** dalam proyek *Ghost-Hunter*. Fokus utama dari peran saya adalah mengubah telemetri mentah (log host & jaringan) menjadi aturan deteksi proaktif (*custom rules*) serta mengotomatisasikan triase insiden menggunakan Python.
 
 ---
