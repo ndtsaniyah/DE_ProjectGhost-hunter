@@ -1,5 +1,6 @@
 # Detection Engineer for Project Ghost-Hunter
 
+
 # 🛡️ Ghost-Hunter: Detection Engineering & Defense Automation Lab
 Repositori ini mendokumentasikan seluruh artefak teknis, logika deteksi, dan skrip otomatisasi mitigasi yang saya kembangkan sebagai **Detection Engineer** dalam proyek *Ghost-Hunter*. Fokus utama dari peran saya adalah mengubah telemetri mentah (log host & jaringan) menjadi aturan deteksi proaktif (*custom rules*) serta mengotomatisasikan triase insiden menggunakan Python.
 
@@ -26,6 +27,16 @@ Berikut adalah field spesifik yang saya petakan di lingkungan pengembangan untuk
 ### 2. Network Logs (Zeek dns.log via Kibana)
 * **`data.zeek.dns.query`** / **`dns.question.name`**: Target analisis string kueri subdomain yang panjang (indikasi DGA atau eksfiltrasi `dnscat2`).
 * **`data.zeek.dns.qtype_name`**: Pemantauan khusus untuk tipe record **TXT** anomali yang sering digunakan sebagai jalur C2 outbound.
+
+---
+
+## 🌐 Akses Monitoring Lab (SIEM Dashboard)
+
+Untuk memantau visualisasi log, memvalidasi alert, dan menguji aturan deteksi secara langsung, dashboard Kibana diakses melalui perimeter jaringan virtual ZeroTier kelompok:
+
+* **URL Akses Dashboard:** `http://<IP_VPN_NDA>:5601`
+
+> ⚠️ **Catatan Pengembangan:** Variabel `<IP_VPN_NDA>` merujuk pada Managed IP dari laptop Network Analyst yang teralokasi pada dasbor ZeroTier Central kelompok. Pastikan agen ZeroTier lokal Anda telah berstatus `Authorized` sebelum mengakses tautan di atas.
 
 ---
 
