@@ -61,10 +61,11 @@ Saya menerapkan standardisasi ID aturan kustom pada rentang **100060 - 100070** 
 
 ## 📁 Struktur Repositori (Detection Engineer Workspace)
 
+```text
 ├── .vscode/                  # Konfigurasi workspace lokal VS Code
 ├── rules/
-│   ├── local_rules.xml       # File produksi aturan kustom & tuning Wazuh (ID: 00060-100070)
-│   ├── kibana_kql_master.txt # Kumpulan kueri Master Hunting & Automated Alerting KQL/Lucene Zeek
+│   ├── local_rules.xml       # File produksi aturan kustom & tuning Wazuh (ID: 100060-100071)
+│   ├── kibana_kql_master.txt # Kumpulan kueri Master Hunting & Automated Alerting KQL/Lucene
 │   └── sigma_rules.yml       # Draf aturan portabel berbasis format Sigma (Playbook Blueprint)
 └── docs/
     ├── raw_fields_mapping.md # Dokumentasi hasil pemetaan field Sysmon & Zeek di Kibana
