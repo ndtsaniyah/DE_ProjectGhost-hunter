@@ -1,21 +1,42 @@
-<group name="windows, sysmon, ghost-hunter,">
+<group name="sysmon,windows,attack_detection,">
 
-  <rule id="100001" level="7">
-    <if_sid>61603</if_sid> <field name="win.eventdata.image">schtasks.exe</field>
-    <description>Ghost-Hunter: Pemanggilan Utilitas schtasks.exe Terdeteksi</description>
+  <rule id="100060" level="0">
+    <if_sid>61603</if_sid> <field name="agent.id">^003$</field>
+    <description>Sysmon: Process Creation Monitor on Agent 003</description>
+  </rule>
+
+  <rule id="100061" level="8">
+    <if_sid>100060</if_sid>
+    <field name="win.eventdata.originalFileName">^schtasks\.exe$</field>
+    <description>Sysmon: Scheduled Task Utility (schtasks.exe) Executed on Agent 003</description>
     <mitre>
       <id>T1053.005</id>
     </mitre>
   </rule>
 
-  <rule id="100002" level="9">
-    <if_sid>61603</if_sid>
-    <field name="win.eventdata.image">powershell.exe</field>
-    <description>Ghost-Hunter: Aktivitas PowerShell Mencurigakan Terdeteksi</description>
+  <rule id="100062" level="8">
+    <if_sid>100060</if_sid>
+    <field name="win.eventdata.commandLine">schtasks</field>
+    <description>Sysmon: Command Line Contains 'schtasks' on Agent 003</description>
+    <mitre>
+      <id>T1053.005</id>
+    </mitre>
+  </rule>
+
+  <rule id="100063" level="12">
+    <if_sid>100060</if_sid>
+    <field name="win.eventdata.image">powershell\.exe$</field>
+    <field name="win.eventdata.commandLine">EncodedCommand</field>
+    <description>Alert: PowerShell Executed with Encoded Argument on Agent 003 (Suspicious Obfuscation)</description>
     <mitre>
       <id>T1059.001</id>
-      <id>T1027</id>
     </mitre>
+  </rule>
+
+  <!-- Tuning False Positive -->
+  <rule id="100070" level="0">
+    <if_sid>92213</if_sid> <field name="win.eventdata.targetFilename">__PSScriptPolicyTest</field>
+    <description>Ignore legitimate PowerShell Script Policy Test files (Tuning False Positive)</description>
   </rule>
 
 </group>
