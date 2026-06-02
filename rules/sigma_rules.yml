@@ -9,8 +9,7 @@
     title: "Deteksi Awal - Filter Aktivitas Proses Agent 003"
     description: "Aturan induk (Parent Rule) untuk menyaring telemetri pembuatan proses baru (Sysmon Event ID 1) khusus pada lingkup Agent 003."
     log_source: "Sysmon (Microsoft-Windows-Sysmon/Operational - Event ID 1)"
-    logic_condition: >
-      agent.id == '003' DAN data.win.system.eventID == '1'
+    logic_condition: agent.id == '003' DAN data.win.system.eventID == '1'
     mitre_mapping:
       tactic: "None (Parent Filter Rule)"
       technique_id: "None"
@@ -60,7 +59,6 @@
     logic_condition: >
       fields.log_source == 'zeek' DAN id.resp_p == 53 DAN (
         query.keyword MENGANDUNG '*.tunnel.capstone8.com*' ATAU 
-        query.keyword MENGANDUNG '*.*.*.*.tunnel.capstone8.com*' ATAU 
         response_body_len > 1000 ATAU 
         (resp_mime_types.keyword == 'text/plain' DAN (message MENGANDUNG 'cmd.exe' ATAU message MENGANDUNG 'whoami' ATAU message MENGANDUNG 'ipconfig'))
       )
@@ -70,12 +68,22 @@
 
 - rule:
     id: 100070
-    title: "Tuning False Positive - Mengabaikan PowerShell Policy Test Files"
-    description: "Aturan pengecualian (Whitelist) untuk membuang log pembuatan file temporer __PSScriptPolicyTest yang dihasilkan otomatis oleh internal Windows Windows agar tidak membanjiri dasbor (Noise Reduction)."
+    title: "Tuning False Positive - PowerShell Policy Test Substring Filter"
+    description: "Mengabaikan berkas aman hasil uji kebijakan GPO PowerShell yang dibuat otomatis oleh sistem."
     log_source: "Sysmon (Microsoft-Windows-Sysmon/Operational - Event ID 11 / File Create)"
     logic_condition: >
-      data.win.system.rule.id == '92213' DAN 
-      data.win.eventdata.targetFilename MENGANDUNG '__PSScriptPolicyTest'
+      data.win.system.rule.id == '92213' DAN data.win.eventdata.targetFilename MENGANDUNG '__PSScriptPolicyTest'
+    mitre_mapping:
+      tactic: "None (Tuning/Whitelist Rule)"
+      technique_id: "None"
+
+- rule:
+    id: 100071
+    title: "Tuning False Positive - Chocolatey Substring Filter"
+    description: "Mengecualikan log pembuatan berkas dari aktivitas manajemen paket Chocolatey yang dibatasi ketat hanya pada jalur direktori resmi untuk mencegah taktik Masquerading (Penyandian Nama Berkas) oleh penyerang."
+    log_source: "Sysmon (Microsoft-Windows-Sysmon/Operational - Event ID 11 / File Create)"
+    logic_condition: >
+      data.win.system.rule.id == '92213' DAN data.win.eventdata.targetFilename MENGANDUNG 'chocolatey'
     mitre_mapping:
       tactic: "None (Tuning/Whitelist Rule)"
       technique_id: "None"

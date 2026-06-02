@@ -26,7 +26,7 @@
   <rule id="100063" level="12">
     <if_sid>100060</if_sid>
     <field name="win.eventdata.image">powershell\.exe$</field>
-    <field name="win.eventdata.commandLine">EncodedCommand</field>
+    <field name="win.eventdata.commandLine" type="pcre2">[\-/][eE][nN][cC]|[eE][nN][cC][oO][dD][eE][dD][cC][oO][mM][mM][aA][nN][dD]</field>
     <description>Alert: PowerShell Executed with Encoded Argument on Agent 003 (Suspicious Obfuscation)</description>
     <mitre>
       <id>T1059.001</id>
@@ -35,8 +35,17 @@
 
   <!-- Tuning False Positive -->
   <rule id="100070" level="0">
-    <if_sid>92213</if_sid> <field name="win.eventdata.targetFilename">__PSScriptPolicyTest</field>
-    <description>Ignore legitimate PowerShell Script Policy Test files (Tuning False Positive)</description>
+    <if_sid>92213</if_sid>
+    <field name="win.eventdata.targetFilename">__PSScriptPolicyTest</field>
+    <description>Ignore benign PowerShell GPO policy test files</description>
+    <options>no_full_log</options>
+  </rule>
+
+  <rule id="100071" level="0">
+    <if_sid>92213</if_sid>
+    <field name="win.eventdata.targetFilename" type="pcre2">(\\AppData\\Local\\Temp\\chocolatey\\|\\ProgramData\\chocolatey\\)</field>
+    <description>Ignore benign file creation restricted to official Chocolatey installation directories</description>
+    <options>no_full_log</options>
   </rule>
 
 </group>

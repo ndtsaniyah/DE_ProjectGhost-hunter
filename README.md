@@ -53,6 +53,7 @@ Saya menerapkan standardisasi ID aturan kustom pada rentang **100060 - 100070** 
 | **100062** | **Host Log** (Sysmon EID 1) | Level 8 (Medium) | T1053.005 | Mengantisipasi teknik *masquerading* jika perintah CLI mengandung argumen teks `schtasks`. |
 | **100063** | **Host Log** (Sysmon EID 1) | Level 12 (High) | T1059.001 | Mendeteksi taktik *Execution* via PowerShell Obfuscation menggunakan parameter `EncodedCommand`. |
 | **100070** | **Tuning Rule** (Sysmon EID 11) | Level 0 (Silent) | None | *Tuning False Positive* untuk mengabaikan dan membungkam log pembuatan berkas normal `__PSScriptPolicyTest`. |
+| **100071** | **Tuning Rule** (Sysmon EID 11) | Level 0 (Silent) | None | *Tuning False Positive* untuk mengabaikan pembuatan berkas aman di dalam direktori resmi `Chocolatey`. |
 
 ---
 
