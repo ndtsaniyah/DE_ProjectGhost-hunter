@@ -5,54 +5,66 @@
 # =============================================================================
 
 - rule:
-    id: 100060
-    title: "Deteksi Awal - Filter Aktivitas Proses Agent 003"
-    description: "Aturan induk (Parent Rule) untuk menyaring telemetri pembuatan proses baru (Sysmon Event ID 1) khusus pada lingkup Agent 003."
-    log_source: "Sysmon (Microsoft-Windows-Sysmon/Operational - Event ID 1)"
-    logic_condition: agent.id == '003' DAN data.win.system.eventID == '1'
+    id: 100001
+    title: "Deteksi Awal - Monitoring Sysmon Activity"
+    description: "Aturan induk (Parent Rule) untuk menyaring aktivitas telemetri Sysmon berbasis Event ID terkait dari rule bawaan 61603 atau 92032."
+    log_source: "Sysmon (Microsoft-Windows-Sysmon/Operational)"
+    logic_condition: data.win.system.eventID TERMASUK JALUR (61603, 92032)
     mitre_mapping:
       tactic: "None (Parent Filter Rule)"
       technique_id: "None"
 
 - rule:
-    id: 100061
-    title: "Deteksi Persistence - Eksekusi Scheduled Tasks via Biner Asli"
-    description: "Mendeteksi otomatis upaya pengamanan akses (Persistence) menggunakan utilitas schtasks.exe berdasarkan kecocokan biner Original File Name pada Agent 003."
+    id: 100002
+    title: "Deteksi Persistence - Scheduled Task Utility Executed (schtasks.exe)"
+    description: "Mendeteksi eksekusi utilitas schtasks.exe berdasarkan kecocokan nama file asli (Original File Name) untuk mengantisipasi teknik pengamanan akses (Persistence) atau pencarian informasi."
     log_source: "Sysmon (Microsoft-Windows-Sysmon/Operational - Event ID 1)"
     logic_condition: >
-      agent.id == '003' DAN data.win.system.eventID == '1' DAN 
-      data.win.eventdata.originalFileName == 'schtasks.exe'
+      MEMICU RULE 100001 DAN 
+      data.win.eventdata.originalFileName TEPAT (Regex Pasif: ^schtasks\.exe$)
     mitre_mapping:
-      tactic: "Persistence"
-      technique_id: "T1053.005"
+      tactic: "Discovery / Persistence"
+      technique_id: "T1087, T1053.005"
 
 - rule:
-    id: 100062
-    title: "Deteksi Persistence - Perintah CLI Mengandung Kata Kunci schtasks"
-    description: "Mengantisipasi teknik penyamaran biner (Masquerading) dengan mendeteksi argumen perintah CLI yang mengandung teks 'schtasks' pada Agent 003."
+    id: 100003
+    title: "Deteksi Persistence - Scheduled Task Utility Executed (Command Line)"
+    description: "Mendeteksi eksekusi utilitas schtasks melalui pemantauan argumen baris perintah (CLI) yang mengandung kata kunci 'schtasks'."
     log_source: "Sysmon (Microsoft-Windows-Sysmon/Operational - Event ID 1)"
     logic_condition: >
-      agent.id == '003' DAN data.win.system.eventID == '1' DAN 
-      data.win.eventdata.commandLine MENGANDUNG 'schtasks'
+      MEMICU RULE 100001 DAN 
+      data.win.eventdata.commandLine MENGANDUNG (Regex Pasif: schtasks)
     mitre_mapping:
-      tactic: "Persistence"
-      technique_id: "T1053.005"
+      tactic: "Discovery / Persistence"
+      technique_id: "T1087, T1053.005"
 
 - rule:
-    id: 100063
-    title: "Deteksi Execution - PowerShell Obfuscated EncodedCommand"
-    description: "Mendeteksi eksekusi skrip PowerShell yang disamarkan menggunakan argumen EncodedCommand pada Agent 003 untuk menyembunyikan payload berbahaya."
-    log_source: "Sysmon (Microsoft-Windows-Sysmon/Operational - Event ID 1)"
+    id: 100004
+    title: "Deteksi Discovery - Potential BloodHound/SharpHound Enumeration Detected via Script Path"
+    description: "Mendeteksi indikasi enumerasi Active Directory oleh tools SharpHound melalui deteksi nama file skrip SharpHound.ps1 pada jalur eksekusi skrip PowerShell."
+    log_source: "Windows PowerShell Event Logs (Event ID 4104 / Script Block Logging)"
     logic_condition: >
-      agent.id == '003' DAN data.win.system.eventID == '1' DAN 
-      data.win.eventdata.image MENGANDUNG 'powershell.exe' DAN 
-      data.win.eventdata.commandLine MENGANDUNG 'EncodedCommand'
+      data.win.system.eventID TERMASUK JALUR (91809, 91837) DAN 
+      data.win.eventdata.path MENGANDUNG (Regex Pasif: SharpHound\.ps1)
     mitre_mapping:
-      tactic: "Execution"
-      technique_id: "T1059.001"
+      tactic: "Execution / Discovery"
+      technique_id: "T1059.001, T1087.002"
 
 - rule:
-    id: 100064
+    id: 100005
+    title: "Deteksi Discovery - Potential BloodHound/SharpHound Execution Detected via ScriptBlock Text"
+    description: "Mendeteksi eksekusi fungsi internal SharpHound di dalam isi konten skrip (ScriptBlock Text) untuk mengantisipasi bypass penamaan file skrip (Masquerading)."
+    log_source: "Windows PowerShell Event Logs (Event ID 4104 / Script Block Logging)"
+    logic_condition: >
+      MEMICU RULE 100004 DAN 
+      data.win.eventdata.scriptBlockText MENGANDUNG (Regex Pasif: SharpHound|InvokeSharpHound)
+    mitre_mapping:
+      tactic: "Execution / Defense Evasion / Discovery"
+      technique_id: "T1059.001, T1027, T1087.002"
+
+# Rule tambahan untuk deteksi anomali DNS Tunneling menggunakan sensor jaringan Zeek
+- rule: 
+    id: 100006
     title: "Deteksi Command and Control - DNS Tunneling Anomaly (Zeek)"
     description: "Mendeteksi saluran C2 terselubung dan komunikasi interaktif via manipulasi protokol DNS Layer 7 menggunakan sensor jaringan Zeek."
     log_source: "Zeek Network Sensor (DNS Log Subsystem - zeek-alerts-4.x-*)"
@@ -65,25 +77,3 @@
     mitre_mapping:
       tactic: "Command and Control"
       technique_id: "T1071.004"
-
-- rule:
-    id: 100070
-    title: "Tuning False Positive - PowerShell Policy Test Substring Filter"
-    description: "Mengabaikan berkas aman hasil uji kebijakan GPO PowerShell yang dibuat otomatis oleh sistem."
-    log_source: "Sysmon (Microsoft-Windows-Sysmon/Operational - Event ID 11 / File Create)"
-    logic_condition: >
-      data.win.system.rule.id == '92213' DAN data.win.eventdata.targetFilename MENGANDUNG '__PSScriptPolicyTest'
-    mitre_mapping:
-      tactic: "None (Tuning/Whitelist Rule)"
-      technique_id: "None"
-
-- rule:
-    id: 100071
-    title: "Tuning False Positive - Chocolatey Substring Filter"
-    description: "Mengecualikan log pembuatan berkas dari aktivitas manajemen paket Chocolatey yang dibatasi ketat hanya pada jalur direktori resmi untuk mencegah taktik Masquerading (Penyandian Nama Berkas) oleh penyerang."
-    log_source: "Sysmon (Microsoft-Windows-Sysmon/Operational - Event ID 11 / File Create)"
-    logic_condition: >
-      data.win.system.rule.id == '92213' DAN data.win.eventdata.targetFilename MENGANDUNG 'chocolatey'
-    mitre_mapping:
-      tactic: "None (Tuning/Whitelist Rule)"
-      technique_id: "None"
