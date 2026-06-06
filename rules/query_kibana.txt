@@ -1,0 +1,22 @@
+===============================================================================
+KUMPULAN KIBANA QUERY LANGUAGE (KQL) - PROJECT GHOST-HUNTER
+===============================================================================
+
+[1] HOST THREAT HUNTING (Persistence & Execution)
+-------------------------------------------------------------------------------
+Target: Windows Endpoint (Agent 003)
+Aktivitas: Scheduled Tasks (LotL) & SharpHound Execution via PowerShell
+
+Kueri KQL:
+agent.id: "003" and ((data.win.system.eventID : "1" and (data.win.eventdata.originalFileName : "schtasks.exe" or data.win.eventdata.commandLine : *schtasks*)) or (data.win.system.eventID: "4104" and data.win.eventdata.path : *SharpHound.ps1*)) 
+
+
+[2] NETWORK THREAT HUNTING (Command & Control)
+-------------------------------------------------------------------------------
+Target: Zeek Network Logs
+Aktivitas: Outbound DNS Tunneling Detection (C2 Infrastructure)
+
+Kueri KQL:
+fields.log_source.keyword : "zeek" and id.resp_p : 53 and query.keyword : *. tunnel.capstone8.com* 
+
+===============================================================================
