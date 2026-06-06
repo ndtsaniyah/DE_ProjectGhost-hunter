@@ -1,10 +1,5 @@
 # 🛡️ Ghost-Hunter: Detection Engineering & Defense Automation Lab
 
-[![Wazuh Rules](https://img.shields.io/badge/Production_Rules-wazuh__rules.xml-orange?style=flat-square&logo=wazuh&logoColor=white)](#-wazuh-rules-production)
-[![Sigma Playbook](https://img.shields.io/badge/Portable_Detection-sigma__rules.yml-blue?style=flat-square&logo=sigma&logoColor=white)](#-sigma-playbook)
-[![Kibana Queries](https://img.shields.io/badge/Hunting_Queries-query__kibana.txt-005571?style=flat-square&logo=kibana&logoColor=white)](#-kibana-master-queries)
-
-
 Repositori ini mendokumentasikan seluruh artefak teknis, logika deteksi, dan skrip otomatisasi mitigasi yang saya kembangkan sebagai **Detection Engineer** dalam proyek *Ghost-Hunter*. Fokus utama dari peran ini adalah mentransformasikan telemetri mentah (*host & network logs*) menjadi aturan deteksi proaktif (*custom rules*) serta mengoptimasikan visualisasi triase insiden pada SIEM.
 
 ---
@@ -78,15 +73,4 @@ Draf aturan portabel berbasis format standarisasi vendor-agnostik (Sigma YAML) u
 Kumpulan kueri berburu (*threat hunting*) taktis menggunakan Kibana Query Language (KQL) untuk investigasi manual di Kibana Discover:
 👉 [Buka query_kibana.txt](rules/query_kibana.txt)
 
----
-
-## 📁 Struktur Repositori (Detection Engineer Workspace)
-
-```text
-├── rules/
-│   ├── kibana_zeek_alerts.txt  # blueprint query alert subsistem jaringan Zeek
-│   ├── query_kibana.txt        # Kumpulan kueri Master Hunting & Analisis Log di Kibana Discover
-│   ├── sigma_rules.yml         # Playbook deteksi portabel berbasis format standarisasi Sigma
-│   └── wazuh_rules.xml         # Berkas produksi aturan kustom XML lokal (ID: 100001-100006)
-└── README.md                   # Dokumentasi utama proyek dan taksonomi lab
 
