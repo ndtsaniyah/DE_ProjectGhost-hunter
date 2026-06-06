@@ -66,7 +66,7 @@ Saya menerapkan standardisasi ID aturan kustom pada rentang **100001 - 100006** 
 
 ```text
 ├── rules/
-│   ├── kibana_zeek_alerts.txt  # Dokumentasi visualisasi & query alert subsistem jaringan Zeek
+│   ├── kibana_zeek_alerts.txt  # blueprint query alert subsistem jaringan Zeek
 │   ├── query_kibana.txt        # Kumpulan kueri Master Hunting & Analisis Log di Kibana Discover
 │   ├── sigma_rules.yml         # Playbook deteksi portabel berbasis format standarisasi Sigma
 │   └── wazuh_rules.xml         # Berkas produksi aturan kustom XML lokal (ID: 100001-100006)
