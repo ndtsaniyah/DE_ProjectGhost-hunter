@@ -62,18 +62,6 @@ Saya menerapkan standardisasi ID aturan kustom pada rentang **100001 - 100006** 
 
 ---
 
-## 📁 Struktur Repositori (Detection Engineer Workspace)
-
-```text
-├── rules/
-│   ├── kibana_zeek_alerts.txt  # blueprint query alert subsistem jaringan Zeek
-│   ├── query_kibana.txt        # Kumpulan kueri Master Hunting & Analisis Log di Kibana Discover
-│   ├── sigma_rules.yml         # Playbook deteksi portabel berbasis format standarisasi Sigma
-│   └── wazuh_rules.xml         # Berkas produksi aturan kustom XML lokal (ID: 100001-100006)
-└── README.md                   # Dokumentasi utama proyek dan taksonomi lab
-
----
-
 ## 📂 Akses Cepat Artefak Teknis
 
 Gunakan bagian ini sebagai pintasan untuk memeriksa logika deteksi yang telah diimplementasikan ke dalam repositori:
@@ -89,3 +77,16 @@ Draf aturan portabel berbasis format standarisasi vendor-agnostik (Sigma YAML) u
 ### 📑 Kibana Master Queries
 Kumpulan kueri berburu (*threat hunting*) taktis menggunakan Kibana Query Language (KQL) untuk investigasi manual di Kibana Discover:
 👉 [Buka query_kibana.txt](rules/query_kibana.txt)
+
+---
+
+## 📁 Struktur Repositori (Detection Engineer Workspace)
+
+```text
+├── rules/
+│   ├── kibana_zeek_alerts.txt  # blueprint query alert subsistem jaringan Zeek
+│   ├── query_kibana.txt        # Kumpulan kueri Master Hunting & Analisis Log di Kibana Discover
+│   ├── sigma_rules.yml         # Playbook deteksi portabel berbasis format standarisasi Sigma
+│   └── wazuh_rules.xml         # Berkas produksi aturan kustom XML lokal (ID: 100001-100006)
+└── README.md                   # Dokumentasi utama proyek dan taksonomi lab
+
