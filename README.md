@@ -71,3 +71,21 @@ Saya menerapkan standardisasi ID aturan kustom pada rentang **100001 - 100006** 
 │   ├── sigma_rules.yml         # Playbook deteksi portabel berbasis format standarisasi Sigma
 │   └── wazuh_rules.xml         # Berkas produksi aturan kustom XML lokal (ID: 100001-100006)
 └── README.md                   # Dokumentasi utama proyek dan taksonomi lab
+
+---
+
+## 📂 Akses Cepat Artefak Teknis
+
+Gunakan bagian ini sebagai pintasan untuk memeriksa logika deteksi yang telah diimplementasikan ke dalam repositori:
+
+### 📑 Wazuh Rules Production
+Aturan produksi XML utama (ID: 100001 - 100006) yang diunggah ke server Wazuh Manager dapat diakses langsung pada berkas berikut:
+👉 [Buka wazuh_rules.xml](rules/wazuh_rules.xml)
+
+### 📑 Sigma Playbook
+Draf aturan portabel berbasis format standarisasi vendor-agnostik (Sigma YAML) untuk ekosistem deteksi yang lebih luas:
+👉 [Buka sigma_rules.yml](rules/sigma_rules.yml)
+
+### 📑 Kibana Master Queries
+Kumpulan kueri berburu (*threat hunting*) taktis menggunakan Kibana Query Language (KQL) untuk investigasi manual di Kibana Discover:
+👉 [Buka query_kibana.txt](rules/query_kibana.txt)
